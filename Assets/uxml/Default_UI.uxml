@@ -1,0 +1,3 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Label text="Label" display-tooltip-when-elided="true" name="DisplayTileInfo" style="-unity-text-align: upper-right; font-size: 28px;" />
+</ui:UXML>
