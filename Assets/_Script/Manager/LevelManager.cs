@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] UIElements ui;
     [SerializeField] GridData gridData;
     [SerializeField] ObstacleManager obstacleManager;
+    [SerializeField] Player player;
 
     //Component instances
     public static Camera Camera => Instance._camera;
@@ -18,6 +19,7 @@ public class LevelManager : MonoBehaviour
     public static GridData GridData => Instance.gridData;
     public static PrefabObjects Prefabs => Instance.prefabs;
     public static ObstacleManager ObstacleManager => Instance.obstacleManager;
+    public static Player Player => Instance.player;
     
     //Instance of level manager
     public static LevelManager Instance { get; private set; }

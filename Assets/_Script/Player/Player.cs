@@ -1,15 +1,8 @@
 using UnityEngine;
 
 public class Player : Moveable, IRayscatEvents
-{
-    [SerializeField] Vector2 startPositionOnGrid;
-    
+{   
     readonly RaycastDetector detector = new();
-
-    private void Start()
-    {
-        currentTile = SetPositionOnGrid(startPositionOnGrid);
-    }
 
     void Update()
     {

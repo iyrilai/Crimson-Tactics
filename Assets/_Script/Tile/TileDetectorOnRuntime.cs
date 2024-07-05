@@ -12,7 +12,6 @@ public class TileDetectorOnRuntime : MonoBehaviour
     {
         //create new instance of 'tileDetector' and inti with 'UI.DisplayTileInfo' label
         tileDetector = new(LevelManager.UI.DisplayTileInfo);
-        tileDetector.OnRaycastEnterCallback += Test;
     }
 
     // Update is called once per frame
@@ -24,9 +23,4 @@ public class TileDetectorOnRuntime : MonoBehaviour
         //Call 'DetectRaycast' to get hit of raycast and display the information 
         tileDetector.DetectRaycast(ray, maxDistance);
     } 
-
-    void Test()
-    {
-
-    }
 }

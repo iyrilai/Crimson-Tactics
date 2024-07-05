@@ -5,11 +5,18 @@ using System.Collections;
 public class Moveable : PathFinidingAI
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] Vector2 startPositionOnGrid;
 
     protected Tile targetTile;
     protected Tile currentTile;
 
+    public Tile CurrentTile => currentTile;
     public bool Moving { get; private set; }
+
+    protected virtual void Start()
+    {
+        currentTile = SetPositionOnGrid(startPositionOnGrid);
+    }
 
     protected virtual IEnumerator MoveObjectOnGrid(Tile[] tiles)
     {
@@ -17,7 +24,6 @@ public class Moveable : PathFinidingAI
 
         for (int i = 0; i < tiles.Length; i++)
         {
-            Debug.Log("moving?");
             float step = moveSpeed * Time.deltaTime;
             Vector3 targetPosition = new(tiles[i].GridPosition.x, transform.position.y, tiles[i].GridPosition.y);
 
