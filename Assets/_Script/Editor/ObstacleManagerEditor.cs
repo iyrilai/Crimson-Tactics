@@ -4,9 +4,6 @@ using UnityEditor.SceneManagement;
 [CustomEditor(typeof(ObstacleManager))]
 public class ObstacleManagerEditor : Editor
 {
-    SerializedProperty obstacleData;
-
-
     private void OnEnable()
     {
         var obstacleManager = (ObstacleManager)target;

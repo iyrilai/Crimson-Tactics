@@ -1,30 +1,20 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 //Store obstacle data to enable obstacle on grid
-public class ObstacleData : ScriptableObject
+public class ObstacleData : ScriptableObjectInstance
 {
-    [SerializeField] Vector2 gridSize = new(10, 10);
-    [SerializeField] List<bool> obstacleEnable = new();
+    [SerializeField] List<bool> obstacleEnable = new(); //List of button based on grid size in grid generator
 
+    //Location of scriptable object
     private const string ObstacleDataFilePath = "Assets/Scriptable Objects/ObstacleData.asset";
 
-    public Vector2 GridSize => gridSize;
+    //Get the boolean list with this property
     public List<bool> ObstacleEnable => obstacleEnable;
 
+    //Load the instance of scriptable object
     public static ObstacleData LoadInstance()
     {
-        var instance = AssetDatabase.LoadAssetAtPath<ObstacleData>(ObstacleDataFilePath);
-
-        if (instance == null)
-        {
-            instance = CreateInstance<ObstacleData>();
-
-            AssetDatabase.CreateAsset(instance, ObstacleDataFilePath);
-            AssetDatabase.SaveAssets();
-        }
-
-        return instance;
+        return LoadInstance<ObstacleData>(ObstacleDataFilePath);
     }
 }

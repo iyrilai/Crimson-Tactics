@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -5,7 +6,6 @@ using UnityEngine;
 public class GridGenerator : MonoBehaviour
 {
     [Header("Reference")]
-    [SerializeField] GameObject tileObject;
     [SerializeField] GridData grid;
 
     [Header("Grid properties")]
@@ -14,36 +14,52 @@ public class GridGenerator : MonoBehaviour
     //Generate Grid
     public void GenerateGrid()
     {
-        if (tileObject == null)      
-            Debug.LogError("TileObejct is null");
-        
+        //Clean all child before generating new
+        ClearGrid(); 
 
-        ClearGrid(); //Clean all child before generating new
+        //New nested lists of tile representing grid position 
+        List<List<Tile>> tiles = new();
 
         //Generating new tile
         int id = 0; //ID for each tile
-        for (int i = 0; i < gridSize.x; i++)
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int j = 0; j < gridSize.y; j++)
+            //new List to add in nested tile list
+            List<Tile> tilesX = new();
+            tiles.Add(tilesX);
+
+            //Create a tile 
+            for (int y = 0; y < gridSize.y; y++)
             {
-                GenerateTile(new(i, j), id);
+                var tile = GenerateTile(new(x, y), id);
+                tilesX.Add(tile);
+                
+                //id increment for next tile
                 id++;
             }
         }
 
-        grid.ReadGridData(); //Read Child and store it in order
+        grid.ReadGridData(gridSize, tiles); //Sent grid data to 'GridData' class
+
+#if UNITY_EDITOR
+        var gridDataObject = GridDataObject.LoadInstance();
+        gridDataObject.GridSize = gridSize;
+#endif
     }
 
-    //Create a instance of tile with specified position
-    void GenerateTile(Vector2 pos, int id)
+    //Create a instance of tile with specified position and return it
+    Tile GenerateTile(Vector2 pos, int id)
     {
-        var child = Instantiate(tileObject, transform); //Creating tile and setting as child of this gameobject
+        var child = Instantiate(PrefabObjects.LoadInstance().BasicTile, transform); //Creating tile and setting as child of this gameobject
         child.transform.localPosition = new(pos.x, 0, pos.y); //setting position of tile based on 'pos'
         child.name = $"Tile_{id}"; //Assign name child tile
 
         //Assign a ID value to tile
         var tile = child.AddComponent<Tile>();
         tile.ID = id;
+
+        //return tile
+        return tile;
     }
 
     //Clean all existing child

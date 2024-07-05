@@ -1,14 +1,8 @@
 using UnityEditor;
 
-[InitializeOnLoad]
 [CustomEditor(typeof(ObstacleData))]
 public class ObstacleDataEditor : Editor
 {
-    static ObstacleDataEditor()
-    {
-
-    }
-
     [MenuItem("Toolkit/Obstacle Editor")]
     public static void ShowEditor()
     {
@@ -29,7 +23,9 @@ public class ObstacleDataEditor : Editor
     void UpdateObstacleOnEnable()
     {
         var obstacleData = (ObstacleData)target;
-        var size = (int)obstacleData.GridSize.x * obstacleData.GridSize.y;
+        var gridSize = GridDataObject.LoadInstance().GridSize;
+
+        var size = (int)gridSize.x * gridSize.y;
 
         if (size == obstacleData.ObstacleEnable.Count) return;
 
