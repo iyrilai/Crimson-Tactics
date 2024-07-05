@@ -17,4 +17,14 @@ public class ObstacleData : ScriptableObjectInstance
     {
         return LoadInstance<ObstacleData>(ObstacleDataFilePath);
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        //Restart Obstacle Manager in Runtime
+        if (LevelManager.Instance == null) return;
+        LevelManager.ObstacleManager.DestroyObstacles();
+        LevelManager.ObstacleManager.GenerateSphere();
+    }
+#endif
 }

@@ -10,12 +10,14 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Camera _camera;
     [SerializeField] UIElements ui;
     [SerializeField] GridData gridData;
+    [SerializeField] ObstacleManager obstacleManager;
 
     //Component instances
     public static Camera Camera => Instance._camera;
     public static UIElements UI => Instance.ui;
     public static GridData GridData => Instance.gridData;
     public static PrefabObjects Prefabs => Instance.prefabs;
+    public static ObstacleManager ObstacleManager => Instance.obstacleManager;
     
     //Instance of level manager
     public static LevelManager Instance { get; private set; }
@@ -25,5 +27,12 @@ public class LevelManager : MonoBehaviour
     {
         //Assign instance of this script on initialization
         Instance = this;
+    }
+
+    //Called on object destroy
+    private void OnDestroy()
+    {
+        //Reset Instance
+        Instance = null;
     }
 }

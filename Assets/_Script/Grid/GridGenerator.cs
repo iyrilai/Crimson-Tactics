@@ -15,10 +15,10 @@ public class GridGenerator : MonoBehaviour
     public void GenerateGrid()
     {
         //Clean all child before generating new
-        ClearGrid(); 
+        ClearGrid();
 
         //New nested lists of tile representing grid position 
-        List<List<Tile>> tiles = new();
+        List<ListWrapper<Tile>> tiles = new();
 
         //Generating new tile
         int id = 0; //ID for each tile
@@ -26,7 +26,7 @@ public class GridGenerator : MonoBehaviour
         {
             //new List to add in nested tile list
             List<Tile> tilesX = new();
-            tiles.Add(tilesX);
+            tiles.Add(new(tilesX));
 
             //Create a tile 
             for (int y = 0; y < gridSize.y; y++)

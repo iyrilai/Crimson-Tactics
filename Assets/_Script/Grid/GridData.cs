@@ -12,15 +12,22 @@ public class GridData : MonoBehaviour
 
     //It help to optimize 'FindTile(Vector2)' function,
     //Improve pathfininding AI faster but uses extra memeory
-    [SerializeField] List<List<Tile>> gridTiles = new(); //Holds all the tile as position
+    [SerializeField] List<ListWrapper<Tile>> gridTiles; //Holds all the tile as position
 
     public Vector2 GridSize => gridSize;
     public List<Tile> Tiles => tiles;
 
     //Get Tile based on Gird Position
     public Tile FindTile(Vector2 position)
-    {
-        return gridTiles[(int)position.x][(int)position.y];
+    {      
+        try
+        {
+            return gridTiles[(int)position.x].List[(int)position.y]; ;
+        }
+        catch 
+        { 
+            return null; 
+        }
     }
 
     //Get Tile based on ID
@@ -39,7 +46,7 @@ public class GridData : MonoBehaviour
     }
 
     //Referencing all the child tile in 'tiles' list
-    public void ReadGridData(Vector2 size, List<List<Tile>> gridTiles)
+    public void ReadGridData(Vector2 size, List<ListWrapper<Tile>> gridTiles)
     {
         gridSize = size;
         this.gridTiles = gridTiles;

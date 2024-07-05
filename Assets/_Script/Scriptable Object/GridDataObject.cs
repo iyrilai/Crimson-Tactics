@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class GridDataObject : ScriptableObjectInstance
@@ -8,7 +9,15 @@ public class GridDataObject : ScriptableObjectInstance
     private const string GridDataFilePath = "Assets/Scriptable Objects/GridData.asset";
 
     //Get the gridSize with this property
-    public Vector2 GridSize { get => gridSize; set => gridSize = value; }
+    public Vector2 GridSize 
+    { 
+        get => gridSize; 
+        set
+        {
+            gridSize = value;
+            EditorUtility.SetDirty(this);
+        }
+    }
 
     //Load the instance of scriptable object
     public static GridDataObject LoadInstance()

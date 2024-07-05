@@ -1,10 +1,16 @@
 using UnityEngine.UIElements;
 using UnityEngine;
+using UnityEngine.Events;
 
 //Tile Detector based mouse raycast
 public class TileDetector : RaycastDetector, IRayscatEvents
 {
     readonly Label displayInfoLabel; //text component to display the tile information
+
+    //Call backs
+    public UnityAction OnRaycastEnterCallback;
+    public UnityAction OnRaycastStayCallback;
+    public UnityAction OnRaycastExitCallback;
 
     //constructor to init 'displayInfoLabel'
     public TileDetector(Label displayInfoLabel)
@@ -36,6 +42,9 @@ public class TileDetector : RaycastDetector, IRayscatEvents
     //Called when ray hit on collider
     public void OnRaycastEnter(RaycastHit hit)
     {
+        //Invoke Callbacks with nullable check
+        OnRaycastEnterCallback?.Invoke();
+
         //Get Gameobject of collider
         var gameObj = hit.collider.gameObject;
 
@@ -48,12 +57,16 @@ public class TileDetector : RaycastDetector, IRayscatEvents
     //Implemented beacuse of 'IRayscatEvents' generic
     public void OnRaycastStay(RaycastHit hit)
     {
-
+        //Invoke Callbacks with nullable check
+        OnRaycastStayCallback?.Invoke();
     }
 
     //Called when ray exits on collider
     public void OnRaycastExit(RaycastHit hit)
     {
+        //Invoke Callbacks with nullable check
+        OnRaycastExitCallback?.Invoke();
+
         //Get Gameobject of collider
         var gameObj = hit.collider.gameObject;
 
