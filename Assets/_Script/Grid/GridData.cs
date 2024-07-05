@@ -8,6 +8,11 @@ public class GridData : MonoBehaviour
 
     public List<GameObject> Tiles => tiles;
 
+    //Get Tile based on ID
+    public GameObject GetTile(int id)
+    {
+        return Tiles[id];
+    }
 
     //Referencing all the child tile in 'tiles' list
     public void ReadGridData()

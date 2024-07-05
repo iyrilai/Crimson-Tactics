@@ -1,44 +1,50 @@
+using UnityEngine.UIElements;
 using UnityEngine;
 
-//This Script detect the tile and display the info on UI label
-public class TileDetector : MonoBehaviour
+public class TileDetector : RaycastDetector, IRayscatEvents
 {
-    [SerializeField] float maxDistance; //max distance of mouse raycast
+    readonly Label displayInfoLabel;
 
-    // Update is called once per frame
-    void Update()
+    public TileDetector(Label displayInfoLabel)
     {
-        //Raycast of mouse
-        Ray ray = LevelManager.Camera.ScreenPointToRay(Input.mousePosition);
-        
-        //Call 'OnRaycastStay()' Function raycast hit
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance))
-        {
-            OnRaycastStay(hit);
-        }
+        this.displayInfoLabel = displayInfoLabel;
     }
 
-    //Called when raycast hit the object
-    void OnRaycastStay(RaycastHit hit)
+    public void DetectRaycast(Ray ray, float maxDistance)
     {
-        //Get the raycast hit, Gameobject 
-        var gameObj = hit.collider.gameObject;
-
-        //If Gameobject is tile then call function 'DisplayTileInfo'
-        if (gameObj.CompareTag("Tile"))      
-            DisplayTileInfo(gameObj);     
+        DetectRaycast(ray, maxDistance, this);
     }
 
-    //This Function Display tile information on UI
     void DisplayTileInfo(GameObject tileObj)
     {
-        //Get the Tile Component if avaliable
-        if(tileObj.TryGetComponent<Tile>(out var tile))
+        if (tileObj.TryGetComponent<Tile>(out var tile))
         {
-            LevelManager.UI.DisplayTileInfo.text = $"Grid Position: {tile.GridPosition.x}, {tile.GridPosition.y}\nID: {tile.ID}";
+            displayInfoLabel.text = UIMessages.DisplayTileInfo(tile);
             return;
         }
 
         Debug.LogWarning($"Tile component missing on {tileObj.name}");
+    }
+
+    public void OnRaycastEnter(RaycastHit hit)
+    {
+        var gameObj = hit.collider.gameObject;
+
+        if (gameObj.CompareTag("Tile"))
+            DisplayTileInfo(gameObj);
+    }
+
+    public void OnRaycastStay(RaycastHit hit)
+    {
+
+    }
+
+    public void OnRaycastExit(RaycastHit hit)
+    {
+        var gameObj = hit.collider.gameObject;
+
+        if (gameObj.CompareTag("Tile"))
+            displayInfoLabel.text = UIMessages.DefaulftTileInfo;
+
     }
 }

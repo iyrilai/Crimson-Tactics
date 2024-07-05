@@ -1,8 +1,7 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
-//Generate Tile based on gridSizes
+//Generate Tile based on gridSizes on editor
 public class GridGenerator : MonoBehaviour
 {
     [Header("Reference")]
@@ -32,7 +31,7 @@ public class GridGenerator : MonoBehaviour
             }
         }
 
-        grid.ReadGridData();
+        grid.ReadGridData(); //Read Child and store it in order
     }
 
     //Create a instance of tile with specified position
@@ -50,11 +49,11 @@ public class GridGenerator : MonoBehaviour
     //Clean all existing child
     public void ClearGrid()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        int childCount = transform.childCount;
+        for (int i = 0; i < childCount; i++)
         {
             var child = transform.GetChild(0); //Get the 1st child
-            Undo.DestroyObjectImmediate(child); //Register removed child
-            DestroyImmediate(child); //remove the child
+            Undo.DestroyObjectImmediate(child.gameObject); //Destroy child gameObject and register for undo
         }
     }
 }

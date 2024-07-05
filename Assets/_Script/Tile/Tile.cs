@@ -1,11 +1,16 @@
 using UnityEngine;
 
+//Holds all tile information
 public class Tile : MonoBehaviour
 {
-    public int ID { get; set; }
+    [SerializeField] int id; //stores tile id
 
-    public Vector2 GridPosition 
-    { 
+    //Get and set ID
+    public int ID { get => id; set => id = value; }
+
+    //Returns grid position on local x and z value
+    public Vector2 GridPosition
+    {
         get
         {
             return new(transform.localPosition.x, transform.localPosition.z);
