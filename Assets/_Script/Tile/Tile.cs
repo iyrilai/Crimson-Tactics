@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour
     //Get the NeighourTiles and store it in 'neighbourTiles' for futher uses
     public List<Tile> NeighourTiles()
     {
+        //if 'neighbourTiles' is null then get neighbours 
         if (neighbourTiles == null)
         {
             List<Tile> neighbours = new();
@@ -53,6 +54,7 @@ public class Tile : MonoBehaviour
             neighbourTiles = neighbours;
         }
 
+        //return neighbours
         return neighbourTiles;
     }
 }

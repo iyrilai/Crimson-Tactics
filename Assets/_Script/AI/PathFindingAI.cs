@@ -3,76 +3,109 @@ using System.Linq;
 using UnityEngine;
 
 //Generate path list for object to travel in grid
-public class PathFinidingAI : MonoBehaviour
+public class PathFindingAI : MonoBehaviour
 {
-    //Find Way with tile in grid position
+    //Find Way with grid position
     public Tile[] FindWay(Vector2 from, Vector2 to)
     {
-        var startTile = LevelManager.GridData.FindTile(from);
-        var endTile = LevelManager.GridData.FindTile(to);
+        var startTile = LevelManager.GridData.FindTile(from); //Get 'from' position tile
+        var endTile = LevelManager.GridData.FindTile(to); //Get 'to' position tile
+        
+        //With Tile call 'FindWay(Tile,Tile)' return the value of it
         return FindWay(startTile, endTile);
     }
 
     //Find Way with two tile
     public Tile[] FindWay(Tile startTile, Tile endTile)
     {
-        var visited = new Dictionary<Tile, Tile>
+        return GetConnection(startTile, endTile);
+    }
+
+    //get the connection between the tile and generate the path then returns it.
+    Tile[] GetConnection(Tile startTile, Tile endTile)
+    {
+        //Dictionary holds tile to tile path
+        var connection = new Dictionary<Tile, Tile>
         {
-            { startTile, null }
+            { startTile, null } //init with 'startTile'
         };
 
-        var frontier = new Queue<Tile>();
-        frontier.Enqueue(startTile);
+        //Queue Works with FIFO(First in First Out), so we store temporary values 
+        var temp = new Queue<Tile>();
+        temp.Enqueue(startTile); //init with 'startTile'
 
-        while (frontier.Count > 0)
+        //Loops unill queue is empty
+        while (temp.Count > 0)
         {
-            var current = frontier.Dequeue();
+            //Get current value from queue
+            var current = temp.Dequeue();
 
+            //when we reach the goal it end the loop and Get path
             if (current == endTile)
             {
-                var path = GetPathToEnd(endTile, visited);
-                var list = path.ToArray();
-                return list;
+                //It convert node to node connection and find the path by going in reverse
+                var path = GetPathToEnd(endTile, connection);
+                var list = path.ToArray(); //Convert to array
+                return list; //return array
             }
 
+            //Get neighout tile without obstacle
             var neighbors = current.NeighourTiles();
+
+            //Loop all the neighbours
             foreach (var tile in neighbors)
             {
-                if (!visited.ContainsKey(tile))
+                //Store the tile in Dictionary if already not exist
+                if (!connection.ContainsKey(tile))
                 {
-                    frontier.Enqueue(tile);
-                    visited.Add(tile, current);
+                    temp.Enqueue(tile); //add to queue to used as next component
+                    connection.Add(tile, current); //add to dictionary to connection between tiles
                 }
             }
         }
 
+        //if unable find path throw error on console and return null
         Debug.LogError("Unable to find path");
         return null;
     }
 
-    LinkedList<Tile> GetPathToEnd(Tile end, IDictionary<Tile, Tile> visitedTiles)
+    //It convert node to node connection and find the path by going in reverse
+    LinkedList<Tile> GetPathToEnd(Tile end, Dictionary<Tile, Tile> connectedTiles)
     {
+        //LinkedList stores path in order
+        //Linkedlist used here because we can store path from start and also from end
+        //Where in List it is not efficient and increase line of code   
         var path = new LinkedList<Tile>();
 
+        //current loaded with end
         var current = end;
-        var previous = visitedTiles[current];
 
+        //previous loaded with dictionary 'current' one of connected tile 
+        var previous = connectedTiles[current];
+
+        //loop until previous is null
+        //loop going till dictionary initialized value 'null' on line 24 - { startTile, null } //init with 'startTile'
         while (previous != null)
         {
+            //Add 'current' to path
             path.AddFirst(current);
 
+            //change current to previous
             current = previous;
-            previous = visitedTiles[current];
+
+            //Get new previous with current value
+            previous = connectedTiles[current];
         }
 
+        //Add home tile to path
         path.AddFirst(current);
 
-        return path;
+        return path; // return the path
     }
 }
 
 
-//Old attends
+//Old try
 /*List<Tile> FindWay(Vector2 from, Vector2 to, GridData data)
     {
         List<Tile> path = new();

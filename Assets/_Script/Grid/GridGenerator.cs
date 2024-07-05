@@ -41,6 +41,7 @@ public class GridGenerator : MonoBehaviour
 
         grid.ReadGridData(gridSize, tiles); //Sent grid data to 'GridData' class
 
+        //Store grid size in scriptable object for editor uses
 #if UNITY_EDITOR
         var gridDataObject = GridDataObject.LoadInstance();
         gridDataObject.GridSize = gridSize;

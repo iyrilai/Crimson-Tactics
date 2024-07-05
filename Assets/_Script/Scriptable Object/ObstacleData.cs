@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Store obstacle data to enable obstacle on grid
-public class ObstacleData : ScriptableObjectInstance
+public class ObstacleData : ScriptableObjectSingleton
 {
     [SerializeField] List<bool> obstacleEnable = new(); //List of button based on grid size in grid generator
 

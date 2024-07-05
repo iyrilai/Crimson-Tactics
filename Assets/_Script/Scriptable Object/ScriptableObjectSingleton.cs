@@ -1,10 +1,10 @@
 using UnityEditor;
 using UnityEngine;
 
-public class ScriptableObjectInstance : ScriptableObject
+public class ScriptableObjectSingleton : ScriptableObject
 {
     //Load the instance of scriptable object
-    public static T LoadInstance<T>(string path) where T : ScriptableObjectInstance
+    public static T LoadInstance<T>(string path) where T : ScriptableObjectSingleton
     {
         //if scriptable object exist get the instance of it
         T instance = AssetDatabase.LoadAssetAtPath<T>(path);

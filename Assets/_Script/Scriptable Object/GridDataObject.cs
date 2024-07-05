@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class GridDataObject : ScriptableObjectInstance
+public class GridDataObject : ScriptableObjectSingleton
 {
     [SerializeField] Vector2 gridSize;
 

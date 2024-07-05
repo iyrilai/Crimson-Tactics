@@ -5,6 +5,7 @@ using UnityEngine;
 //Holds Tile Data on Generated
 public class GridData : MonoBehaviour
 {
+    //Store grid size
     [SerializeField] Vector2 gridSize = new(10, 10);
 
     //It is used to find tile easier
@@ -48,6 +49,7 @@ public class GridData : MonoBehaviour
     //Referencing all the child tile in 'tiles' list
     public void ReadGridData(Vector2 size, List<ListWrapper<Tile>> gridTiles)
     {
+        //Init values
         gridSize = size;
         this.gridTiles = gridTiles;
 
@@ -59,6 +61,7 @@ public class GridData : MonoBehaviour
             tiles.Add(transform.GetChild(i).GetComponent<Tile>()); //Adding child in 'tiles' list
         }
 
+        //Called to save the scene
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
     }
 }

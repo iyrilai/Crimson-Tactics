@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Prefabs", menuName = "Scriptable Objects/PrefabObjects", order = 1)]
-public class PrefabObjects : ScriptableObjectInstance
+public class PrefabObjects : ScriptableObjectSingleton
 {
     [SerializeField] GameObject basicTile;
     [SerializeField] GameObject sphere;
