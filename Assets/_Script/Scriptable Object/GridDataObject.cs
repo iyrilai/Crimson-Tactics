@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GridDataObject : ScriptableObjectSingleton
 {
-    [SerializeField] Vector2 gridSize;
+    [SerializeField] Vector2Int gridSize;
 
     //Location of scriptable object
     private const string GridDataFilePath = "Assets/Scriptable Objects/GridData.asset";
 
     //Get the gridSize with this property
-    public Vector2 GridSize 
+    public Vector2Int GridSize 
     { 
         get => gridSize; 
         set

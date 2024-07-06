@@ -8,8 +8,8 @@ public class PathFindingAI : MonoBehaviour
     //Find Way with grid position
     public Tile[] FindWay(Vector2 from, Vector2 to)
     {
-        var startTile = LevelManager.GridData.FindTile(from); //Get 'from' position tile
-        var endTile = LevelManager.GridData.FindTile(to); //Get 'to' position tile
+        var startTile = LevelManager.GridData.GetTile(from); //Get 'from' position tile
+        var endTile = LevelManager.GridData.GetTile(to); //Get 'to' position tile
         
         //With Tile call 'FindWay(Tile,Tile)' return the value of it
         return FindWay(startTile, endTile);
@@ -24,6 +24,11 @@ public class PathFindingAI : MonoBehaviour
     //get the connection between the tile and generate the path then returns it.
     Tile[] GetConnection(Tile startTile, Tile endTile)
     {
+        if(startTile == null || endTile == null)
+        {
+            Debug.LogError($"{gameObject.name} its starting grid position is not found");
+        }
+
         //Dictionary holds tile to tile path
         var connection = new Dictionary<Tile, Tile>
         {

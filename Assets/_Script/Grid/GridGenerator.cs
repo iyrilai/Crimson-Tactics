@@ -5,11 +5,33 @@ using UnityEngine;
 //Generate Tile based on gridSizes on editor
 public class GridGenerator : MonoBehaviour
 {
-    [Header("Reference")]
-    [SerializeField] GridData grid;
+    //Store gridSize Temp
+    Vector2Int gridSize = new(10, 10);
 
-    [Header("Grid properties")]
-    [SerializeField] Vector2 gridSize = new(10, 10);
+    //Holds gridData
+    GridData grid;
+
+    //Get GridData 'component'
+    public GridData GridData 
+    { 
+        get
+        {
+            //if null then get component
+            if (grid == null)
+                grid = GetComponent<GridData>();
+
+            return grid;
+        }
+
+        set => grid = value; 
+    }
+
+    //Generate Grid with size
+    public void GenerateGrid(Vector2Int size)
+    {
+        gridSize = size;
+        GenerateGrid();
+    }
 
     //Generate Grid
     public void GenerateGrid()
@@ -17,29 +39,23 @@ public class GridGenerator : MonoBehaviour
         //Clean all child before generating new
         ClearGrid();
 
-        //New nested lists of tile representing grid position 
-        List<ListWrapper<Tile>> tiles = new();
-
         //Generating new tile
         int id = 0; //ID for each tile
-        for (int x = 0; x < gridSize.x; x++)
+        for (int x = 0; x < gridSize.y; x++)
         {
-            //new List to add in nested tile list
-            List<Tile> tilesX = new();
-            tiles.Add(new(tilesX));
-
             //Create a tile 
-            for (int y = 0; y < gridSize.y; y++)
+            for (int y = 0; y < gridSize.x; y++)
             {
-                var tile = GenerateTile(new(x, y), id);
-                tilesX.Add(tile);
+                //Generate Tile
+                var tile = GenerateTile(new(y, x), id);
                 
                 //id increment for next tile
                 id++;
             }
         }
 
-        grid.ReadGridData(gridSize, tiles); //Sent grid data to 'GridData' class
+        GridData.ReadGridData(gridSize); //Sent grid data to 'GridData' class
+        ObstacleData.LoadInstance().UpdateObstacleData(gridSize);
 
         //Store grid size in scriptable object for editor uses
 #if UNITY_EDITOR
@@ -49,7 +65,7 @@ public class GridGenerator : MonoBehaviour
     }
 
     //Create a instance of tile with specified position and return it
-    Tile GenerateTile(Vector2 pos, int id)
+    Tile GenerateTile(Vector2Int pos, int id)
     {
         var child = Instantiate(PrefabObjects.LoadInstance().BasicTile, transform); //Creating tile and setting as child of this gameobject
         child.transform.localPosition = new(pos.x, 0, pos.y); //setting position of tile based on 'pos'
@@ -58,6 +74,7 @@ public class GridGenerator : MonoBehaviour
         //Assign a ID value to tile
         var tile = child.AddComponent<Tile>();
         tile.ID = id;
+        tile.GridPosition = pos;
 
         //return tile
         return tile;

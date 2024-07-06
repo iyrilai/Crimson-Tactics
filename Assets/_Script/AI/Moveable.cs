@@ -65,7 +65,7 @@ public class Moveable : PathFindingAI
     protected Tile SetPositionOnGrid(Vector2 gridPos)
     {
         //Get tile on that position
-        var tile = LevelManager.GridData.FindTile(gridPos);
+        var tile = LevelManager.GridData.GetTile(gridPos);
 
         //Set new position based on tile position
         transform.position = new(tile.transform.position.x, transform.position.y, tile.transform.position.z);

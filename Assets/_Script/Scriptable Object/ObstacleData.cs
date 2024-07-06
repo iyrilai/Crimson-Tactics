@@ -12,10 +12,29 @@ public class ObstacleData : ScriptableObjectSingleton
     //Get the boolean list with this property
     public List<bool> ObstacleEnable => obstacleEnable;
 
+    //Store grid size
+    public Vector2Int GridSize { get; private set; }
+
     //Load the instance of scriptable object
     public static ObstacleData LoadInstance()
     {
         return LoadInstance<ObstacleData>(ObstacleDataFilePath);
+    }
+
+    //Update Obstacle Data
+    public void UpdateObstacleData(Vector2Int gridSize)
+    {
+        GridSize = gridSize;
+        
+        //Get total size of grid
+        var size = Tile.GetTileCount(gridSize);
+
+        //if size and boolen button size is same then return
+        //else generate ne boolean buttons
+        if (size == ObstacleEnable.Count) return;
+
+        ObstacleEnable.Clear();
+        ObstacleEnable.AddRange(new bool[size]);
     }
 
 #if UNITY_EDITOR
