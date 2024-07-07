@@ -58,17 +58,26 @@ public class GridEditorWindow : EditorWindow
         //Load input field for grid size
         gridSize = EditorGUILayout.Vector2IntField("Grid Size:", gridSize);
 
+        EditorGUILayout.Space(5); //Space for good view
+
+        //Backup button to reset grid
+        if (GUILayout.Button("Generate Grid"))
+        {
+            UpdateGrid();
+        }
+
+        var gridData = ComponentFinder.FindComponent<GridData>("Grid");
+        if (gridData == null)
+            return;
+
+        if (gridData.GridSize != gridSize)
+            return;
+
         EditorGUILayout.Space(20); //Space for good view
         EditorGUILayout.LabelField("Obstacle Editor"); //Text message on editor
         EditorGUILayout.Space(5); //Space for good view
 
         GenerateObstacleToggle(); //load scriptable object values and toggle button
-
-        //Backup button to reset grid
-        if (GUILayout.Button("Grid Reset and Load Data"))
-        {
-            UpdateGrid();
-        }
     }
 
     //Called evey 10 seconds and update the GUI
