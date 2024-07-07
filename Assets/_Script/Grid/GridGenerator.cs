@@ -67,7 +67,14 @@ public class GridGenerator : MonoBehaviour
     //Create a instance of tile with specified position and return it
     Tile GenerateTile(Vector2Int pos, int id)
     {
-        var child = Instantiate(PrefabObjects.LoadInstance().BasicTile, transform); //Creating tile and setting as child of this gameobject
+        var tileObject = PrefabObjects.LoadInstance().BasicTile;
+       
+        if(tileObject == null)
+        {
+            throw new System.Exception("Attach tileObject in Assets/Scriptable Object/Prefabs.asset");
+        }
+
+        var child = Instantiate(tileObject, transform); //Creating tile and setting as child of this gameobject
         child.transform.localPosition = new(pos.x, 0, pos.y); //setting position of tile based on 'pos'
         child.name = $"Tile_{id}"; //Assign name child tile
 
